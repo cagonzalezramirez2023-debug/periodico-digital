@@ -160,3 +160,63 @@ btnReiniciar.addEventListener("click", () => {
 
 // Inicio
 cargarPregunta();
+// ============================================================
+//  MENÚ HAMBURGUESA
+// ============================================================
+(function () {
+  const hamburger   = document.getElementById('hamburger');
+  const navMenu     = document.getElementById('nav-menu');
+  const navOverlay  = document.getElementById('nav-overlay');
+  const navLinks    = document.querySelectorAll('.nav-link');
+
+  if (!hamburger || !navMenu) return;
+
+  function openMenu() {
+    hamburger.classList.add('is-open');
+    navMenu.classList.add('nav-open');
+    navOverlay.classList.add('visible');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    hamburger.classList.remove('is-open');
+    navMenu.classList.remove('nav-open');
+    navOverlay.classList.remove('visible');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', () => {
+    if (hamburger.classList.contains('is-open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  // Cerrar al hacer click en overlay
+  navOverlay.addEventListener('click', closeMenu);
+
+  // Cerrar al hacer click en cualquier enlace del menú
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 820) closeMenu();
+    });
+  });
+
+  // Cerrar con Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && hamburger.classList.contains('is-open')) {
+      closeMenu();
+      hamburger.focus();
+    }
+  });
+
+  // Resetear al redimensionar a desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 820) {
+      closeMenu();
+    }
+  });
+})();
